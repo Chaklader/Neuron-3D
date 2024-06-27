@@ -1,223 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
-  <head>
-    <title>Neuron 3D Digital Clone™ Viewer</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
-    />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <style>
-      body {
-        overflow: hidden;
-        margin: 0;
-        height: 100vh;
-        width: 100vw;
-        font-family: sans-serif;
-        background: black;
-        text-shadow: 0 0 3px black;
-      }
-      a,
-      body {
-        color: white;
-      }
-      #info {
-        z-index: 100;
-        position: absolute;
-        top: 10px;
-        left: 15px;
-      }
-      h3 {
-        margin: 5px 0;
-      }
-      p {
-        margin: 5px 0;
-        font-size: small;
-      }
+    <head>
+        <title>Neuron 3D Digital Clone™ Viewer</title>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <style>
+            body {
+                overflow: hidden;
+                margin: 0;
+                height: 100vh;
+                width: 100vw;
+                font-family: sans-serif;
+                background: black;
+                text-shadow: 0 0 3px black;
+            }
+            a,
+            body {
+                color: white;
+            }
+            #info {
+                z-index: 100;
+                position: absolute;
+                top: 10px;
+                left: 15px;
+            }
+            h3 {
+                margin: 5px 0;
+            }
+            p {
+                margin: 5px 0;
+                font-size: small;
+            }
 
-      #message {
-        font-weight: bold;
-        font-size: large;
-        color: red;
-        pointer-events: none;
-      }
+            #message {
+                font-weight: bold;
+                font-size: large;
+                color: red;
+                pointer-events: none;
+            }
 
-      details {
-        font-size: medium;
-      }
+            details {
+                font-size: medium;
+            }
 
-      #progress {
-        position: absolute;
-        top: 0;
-        height: 5px;
-        background: blue;
-        z-index: 99;
-        transition: width 0.1s ease-in-out;
-      }
+            #progress {
+                position: absolute;
+                top: 0;
+                height: 5px;
+                background: blue;
+                z-index: 99;
+                transition: width 0.1s ease-in-out;
+            }
 
-      #quality {
-        position: absolute;
-        bottom: 10px;
-        z-index: 999;
-        right: 10px;
-      }
+            #quality {
+                position: absolute;
+                bottom: 10px;
+                z-index: 999;
+                right: 10px;
+            }
 
-      #canvas {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        touch-action: none;
-      }
+            #canvas {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
 
-      #instructions {
-        background: rgba(0, 0, 0, 0.6);
-        white-space: pre-wrap;
-        padding: 10px;
-        border-radius: 10px;
-        font-size: x-small;
-      }
-      body.nohf .nohf {
-        display: none;
-      }
-      body.nohf #progress,
-      body.nohf .cube-face {
-        background: #ff9d0d;
-      }
+            #instructions {
+                background: rgba(0, 0, 0, 0.6);
+                white-space: pre-wrap;
+                padding: 10px;
+                border-radius: 10px;
+                font-size: x-small;
+            }
+            body.nohf .nohf {
+                display: none;
+            }
+            body.nohf #progress,
+            body.nohf .cube-face {
+                background: #ff9d0d;
+            }
 
-      /* joy stick controller */
-      #joystick-container {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        width: 150px;
-        height: 150px;
-        /* background-color: rgba(0, 0, 0, 0.5); */
-        background-color: rgba(255, 255, 255, 0.5);
-        /* background-color: #707070; */
-        border-radius: 50%;
-        touch-action: none;
-      }
-      #joystick {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        background-color: rgba(0, 0, 0, 1);
+            /* joy stick controller */
+            #joystick-container {
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+                width: 150px;
+                height: 150px;
+                /* background-color: rgba(0, 0, 0, 0.5); */
+                background-color: rgba(255, 255, 255, 0.5);
+                /* background-color: #707070; */
+                border-radius: 50%;
+                touch-action: none;
+            }
+            #joystick {
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                background-color: rgba(0, 0, 0, 1);
 
-        /* background-color: #3d3d3d; */
-        border-radius: 50%;
-        left: 45px;
-        top: 45px;
-        touch-action: none;
-      }
+                /* background-color: #3d3d3d; */
+                border-radius: 50%;
+                left: 45px;
+                top: 45px;
+                touch-action: none;
+            }
 
-      /* button-controllers */
+            /* button-controllers */
 
-      .control-container {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-      }
+            .control-container {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 1;
+            }
 
-      .control-button {
-        width: 50px;
-        height: 50px;
-        background-color: rgba(255, 255, 255, 0.5);
-        border: none;
-        border-radius: 50%;
-        font-size: 20px;
-        color: black;
-        cursor: pointer;
-        margin: 10px 0;
-      }
+            .control-button {
+                width: 50px;
+                height: 50px;
+                background-color: rgba(255, 255, 255, 0.5);
+                border: none;
+                border-radius: 50%;
+                font-size: 20px;
+                color: black;
+                cursor: pointer;
+                margin: 10px 0;
+            }
 
-      /* Disable text selection on the entire page */
-      * {
-        -webkit-user-select: none; /* Safari */
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-        user-select: none; /* Standard */
-      }
-    </style>
-  </head>
-  <body>
-    <script>
-      if (location.host.includes("hf.space"))
-        document.body.classList.add("nohf");
-    </script>
-    <div id="info">
-      <!-- <h3 class="nohf">5521 8TH AVENUE BROOKLYN NY 11220</h3> -->
-      <p>
-        <small class="nohf">
-          Digital Clone™ by <a href="https://neuron3d.com/">Neuron 3D™</a>.
-        </small>
-        <select id="dropdown"></select>
-      </p>
-    </div>
+            /* Disable text selection on the entire page */
+            * {
+                -webkit-user-select: none; /* Safari */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Standard */
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            if (location.host.includes('hf.space'))
+                document.body.classList.add('nohf');
+        </script>
+        <div id="info">
+            <!-- <h3 class="nohf">5521 8TH AVENUE BROOKLYN NY 11220</h3> -->
+            <p>
+                <small class="nohf">
+                    Digital Clone™ by
+                    <a href="https://neuron3d.com/">Neuron 3D™</a>.
+                </small>
+                <select id="dropdown"></select>
+            </p>
+        </div>
 
-    <div id="progress"></div>
-    <div id="message"></div>
+        <div id="progress"></div>
+        <div id="message"></div>
 
-    <div class="" id="spinner" , href=""></div>
-    <canvas id="canvas"></canvas>
+        <div class="" id="spinner" , href=""></div>
+        <canvas id="canvas"></canvas>
 
-    <!-- joy stick -->
-    <div id="joystick-container">
-      <div id="joystick"></div>
-    </div>
+        <!-- joy stick -->
+        <div id="joystick-container">
+            <div id="joystick"></div>
+        </div>
 
-    <!-- Controller buttons -->
-    <!-- Controller buttons -->
-    <div class="control-container">
-      <button class="control-button" onclick="resetView()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="icon-md-heavy"
-        >
-          <path
-            fill="currentColor"
-            d="M3.07 10.876C3.623 6.436 7.41 3 12 3a9.15 9.15 0 0 1 6.012 2.254V4a1 1 0 1 1 2 0v4a1 1 0 0 1-1 1H15a1 1 0 1 1 0-2h1.957A7.15 7.15 0 0 0 12 5a7 7 0 0 0-6.946 6.124 1 1 0 1 1-1.984-.248m16.992 1.132a1 1 0 0 1 .868 1.116C20.377 17.564 16.59 21 12 21a9.15 9.15 0 0 1-6-2.244V20a1 1 0 1 1-2 0v-4a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2H7.043A7.15 7.15 0 0 0 12 19a7 7 0 0 0 6.946-6.124 1 1 0 0 1 1.116-.868"
-          ></path>
-        </svg>
-      </button>
+        <!-- Controller buttons -->
+        <!-- Controller buttons -->
+        <div class="control-container">
+            <button class="control-button" onclick="resetView()">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="icon-md-heavy"
+                >
+                    <path
+                        fill="currentColor"
+                        d="M3.07 10.876C3.623 6.436 7.41 3 12 3a9.15 9.15 0 0 1 6.012 2.254V4a1 1 0 1 1 2 0v4a1 1 0 0 1-1 1H15a1 1 0 1 1 0-2h1.957A7.15 7.15 0 0 0 12 5a7 7 0 0 0-6.946 6.124 1 1 0 1 1-1.984-.248m16.992 1.132a1 1 0 0 1 .868 1.116C20.377 17.564 16.59 21 12 21a9.15 9.15 0 0 1-6-2.244V20a1 1 0 1 1-2 0v-4a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2H7.043A7.15 7.15 0 0 0 12 19a7 7 0 0 0 6.946-6.124 1 1 0 0 1 1.116-.868"
+                    ></path>
+                </svg>
+            </button>
 
-      <button
-        class="control-button"
-        onmousedown="startAction('moveUp')"
-        onmouseup="stopAction()"
-        ontouchstart="startAction('moveUp')"
-        ontouchend="stopAction()"
-      >
-        ▲
-      </button>
+            <button
+                class="control-button"
+                onmousedown="startAction('moveUp')"
+                onmouseup="stopAction()"
+                ontouchstart="startAction('moveUp')"
+                ontouchend="stopAction()"
+            >
+                ▲
+            </button>
 
-      <button
-        class="control-button"
-        onmousedown="startAction('moveDown')"
-        onmouseup="stopAction()"
-        ontouchstart="startAction('moveDown')"
-        ontouchend="stopAction()"
-      >
-        ▼
-      </button>
+            <button
+                class="control-button"
+                onmousedown="startAction('moveDown')"
+                onmouseup="stopAction()"
+                ontouchstart="startAction('moveDown')"
+                ontouchend="stopAction()"
+            >
+                ▼
+            </button>
 
-      <!-- <button
+            <!-- <button
         class="control-button"
         onmousedown="startAction('rotateQ')"
         onmouseup="stopAction()"
@@ -236,18 +237,18 @@
         ↻
       </button> -->
 
-      <button
-        class="control-button toggle-control-button"
-        onclick="toggleControls()"
-      >
-        -
-      </button>
-    </div>
+            <button
+                class="control-button toggle-control-button"
+                onclick="toggleControls()"
+            >
+                -
+            </button>
+        </div>
 
-    <div id="quality">
-      <span id="fps"></span>
-    </div>
+        <div id="quality">
+            <span id="fps"></span>
+        </div>
 
-    <script src="main.js"></script>
-  </body>
+        <script src="main.js"></script>
+    </body>
 </html>
