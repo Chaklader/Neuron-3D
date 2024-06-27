@@ -1317,13 +1317,32 @@ async function handleRendering(req, carousel) {
                 }
             } else {
                 // Vertical swipe
+                // if (Math.abs(dy) > swipeThreshold) {
+                //     if (
+                //         lastSwipeDirection === '' ||
+                //         lastSwipeDirection === 'vertical'
+                //     ) {
+                //         // Limit vertical rotation to a natural range
+                //         const maxRotationAngle = Math.PI / 4; // Adjust this value as needed
+                //         const newRotationX =
+                //             currentRotationX + swipeSpeedFactor * dy;
+                //         if (
+                //             newRotationX >= -maxRotationAngle &&
+                //             newRotationX <= 0
+                //         ) {
+                //             inv = rotate4(inv, swipeSpeedFactor * dy, 1, 0, 0);
+                //         }
+                //         lastSwipeDirection = 'vertical';
+                //     }
+                // }
+
                 if (Math.abs(dy) > swipeThreshold) {
                     if (
                         lastSwipeDirection === '' ||
                         lastSwipeDirection === 'vertical'
                     ) {
                         // Limit vertical rotation to a natural range
-                        const maxRotationAngle = Math.PI / 4; // Adjust this value as needed
+                        const maxRotationAngle = Math.PI / 6; // Adjust this value as needed
                         const newRotationX =
                             currentRotationX + swipeSpeedFactor * dy;
                         if (
@@ -1475,13 +1494,39 @@ async function handleRendering(req, carousel) {
                 }
             } else {
                 // Vertical swipe
+                // if (Math.abs(dy) > mouseSwipeThreshold) {
+                //     if (
+                //         mouseLastSwipeDirection === '' ||
+                //         mouseLastSwipeDirection === 'vertical'
+                //     ) {
+                //         // Limit vertical rotation to a natural range
+                //         const maxRotationAngle = Math.PI / 4; // Adjust this value as needed
+                //         const newRotationX =
+                //             currentRotationX + mouseSwipeSpeedFactor * dy;
+                //         if (
+                //             newRotationX >= -maxRotationAngle &&
+                //             newRotationX <= 0
+                //         ) {
+                //             inv = rotate4(
+                //                 inv,
+                //                 mouseSwipeSpeedFactor * dy,
+                //                 1,
+                //                 0,
+                //                 0
+                //             );
+                //         }
+                //         mouseLastSwipeDirection = 'vertical';
+                //     }
+                // }
+
+                // Vertical swipe
                 if (Math.abs(dy) > mouseSwipeThreshold) {
                     if (
                         mouseLastSwipeDirection === '' ||
                         mouseLastSwipeDirection === 'vertical'
                     ) {
                         // Limit vertical rotation to a natural range
-                        const maxRotationAngle = Math.PI / 4; // Adjust this value as needed
+                        const maxRotationAngle = Math.PI / 6; // Adjust this value as needed
                         const newRotationX =
                             currentRotationX + mouseSwipeSpeedFactor * dy;
                         if (
